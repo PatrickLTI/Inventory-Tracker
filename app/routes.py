@@ -6,8 +6,7 @@ from app.models import Ingredient, Dish, Sale, dish_ingredients
 def index():
     ingredients = Ingredient.query.all()
     dishes = Dish.query.all()
-    sales = Sale.query.all()
-    return render_template('index.html', title='Home', ingredients=ingredients, dishes=dishes, sales=sales)
+    return render_template('index.html', title='Home', ingredients=ingredients, dishes=dishes)
 
 @app.route('/add_ingredient', methods=['POST'])
 def add_ingredient():
@@ -16,14 +15,6 @@ def add_ingredient():
     unit = request.form['unit']
     ingredient = Ingredient(name=name, quantity=quantity, unit=unit)
     db.session.add(ingredient)
-    db.session.commit()
-    return redirect(url_for('index'))
-
-@app.route('/update_ingredient/<int:ingredient_id>', methods=['POST'])
-def update_ingredient(ingredient_id):
-    ingredient = Ingredient.query.get_or_404(ingredient_id)
-    new_quantity = request.form['new_quantity']
-    ingredient.quantity = new_quantity
     db.session.commit()
     return redirect(url_for('index'))
 
