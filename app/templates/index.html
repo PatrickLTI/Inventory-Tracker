@@ -1,42 +1,80 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Inventory Tracker</h1>
+    <h1>Inventory Management</h1>
 
     <h2>Ingredients</h2>
-    <ul>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+        </tr>
         {% for ingredient in ingredients %}
-            <li>{{ ingredient.name }} - {{ ingredient.quantity }} {{ ingredient.unit }}</li>
+            <tr>
+                <td>{{ ingredient.name }}</td>
+                <td>{{ ingredient.quantity }}</td>
+                <td>{{ ingredient.unit }}</td>
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
 
+    <h2>Add Ingredient</h2>
     <form action="{{ url_for('add_ingredient') }}" method="post">
-        <input type="text" name="ingredient_name" placeholder="Ingredient Name">
-        <input type="text" name="quantity" placeholder="Quantity">
-        <input type="text" name="unit" placeholder="Unit">
+        <label for="ingredient_name">Name:</label>
+        <input type="text" id="ingredient_name" name="ingredient_name">
+        <label for="quantity">Quantity:</label>
+        <input type="text" id="quantity" name="quantity">
+        <label for="unit">Unit:</label>
+        <input type="text" id="unit" name="unit">
         <input type="submit" value="Add Ingredient">
     </form>
 
     <h2>Dishes</h2>
-    <ul>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Manage Ingredients</th>
+        </tr>
         {% for dish in dishes %}
-            <li><a href="{{ url_for('dish', dish_id=dish.id) }}">{{ dish.name }}</a></li>
+            <tr>
+                <td>{{ dish.name }}</td>
+                <td><a href="{{ url_for('dish', dish_id=dish.id) }}">Manage</a></td>
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
 
+    <h2>Add Dish</h2>
     <form action="{{ url_for('add_dish') }}" method="post">
-        <input type="text" name="dish_name" placeholder="Dish Name">
+        <label for="dish_name">Name:</label>
+        <input type="text" id="dish_name" name="dish_name">
         <input type="submit" value="Add Dish">
     </form>
 
     <h2>Record Sale</h2>
     <form action="{{ url_for('record_sale') }}" method="post">
-        <select name="dish">
+        <label for="dish">Dish:</label>
+        <select id="dish" name="dish">
             {% for dish in dishes %}
                 <option value="{{ dish.id }}">{{ dish.name }}</option>
             {% endfor %}
         </select>
-        <input type="text" name="quantity" placeholder="Quantity">
+        <label for="sale_quantity">Quantity:</label>
+        <input type="text" id="sale_quantity" name="sale_quantity">
         <input type="submit" value="Record Sale">
     </form>
+
+    <h2>Sales</h2>
+    <table>
+        <tr>
+            <th>Dish</th>
+            <th>Quantity</th>
+        </tr>
+        {% for sale in sales %}
+            <tr>
+                <td>{{ sale.dish.name }}</td>
+                <td>{{ sale.quantity }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

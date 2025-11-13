@@ -3,20 +3,30 @@
 {% block content %}
     <h1>{{ dish.name }}</h1>
 
-    <h2>Ingredients</h2>
-    <ul>
+    <h2>Ingredients in this Dish</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Quantity</th>
+        </tr>
         {% for ingredient in dish.ingredients %}
-            <li>{{ ingredient.ingredient.name }} - {{ ingredient.quantity }}</li>
+            <tr>
+                <td>{{ ingredient.name }}</td>
+                <td>{{ ingredient_quantities.get(ingredient.id, 'N/A') }}</td>
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
 
+    <h2>Add Ingredient to Dish</h2>
     <form action="{{ url_for('add_ingredient_to_dish', dish_id=dish.id) }}" method="post">
-        <select name="ingredient">
+        <label for="ingredient">Ingredient:</label>
+        <select id="ingredient" name="ingredient">
             {% for ingredient in ingredients %}
                 <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
             {% endfor %}
         </select>
-        <input type="text" name="quantity" placeholder="Quantity">
-        <input type="submit" value="Add Ingredient">
+        <label for="quantity">Quantity:</label>
+        <input type="text" id="quantity" name="quantity" placeholder="Quantity">
+        <input type="submit" value="Add/Update Ingredient">
     </form>
 {% endblock %}

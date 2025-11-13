@@ -31,26 +31,30 @@ def run(playwright):
     page.click("input[value='Add Dish']")
 
     # Navigate to the dish page
-    page.click("a:text('Bread')")
+    page.click("a:text('Manage')")
 
     # Add the ingredient to the dish
     page.select_option("select[name='ingredient']", label="Flour")
     page.fill("input[name='quantity']", "200")
-    page.click("input[value='Add Ingredient']")
+    page.click("input[value='Add/Update Ingredient']")
 
     # Go back to the index page
     page.goto("http://127.0.0.1:5000/")
 
     # Record a sale
-    page.select_option("form[action='/record_sale'] select[name='dish']", label="Bread")
-    page.fill("form[action='/record_sale'] input[name='quantity']", "2")
-    page.click("form[action='/record_sale'] input[value='Record Sale']")
+    page.select_option("select[name='dish']", label="Bread")
+    page.fill("input[name='sale_quantity']", "2")
+    page.click("input[value='Record Sale']")
 
     # Take a screenshot to verify
-    page.screenshot(path="/home/jules/verification/verification.png")
+    page.screenshot(path="verification.png")
 
     # Verify that the ingredient quantity has been updated
-    assert "Flour - 600 grams" in page.content()
+    # Get the text content of the ingredients table
+    ingredients_table_content = page.inner_text('h2:has-text("Ingredients") + table')
+    assert "Flour" in ingredients_table_content
+    assert "600" in ingredients_table_content
+    assert "grams" in ingredients_table_content
 
     browser.close()
 
