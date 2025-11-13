@@ -6,6 +6,11 @@
 </head>
 <body>
     <div class="container">
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('shopping_list') }}">Shopping List</a>
+        </nav>
+        <hr>
         {% block content %}{% endblock %}
     </div>
 </body>

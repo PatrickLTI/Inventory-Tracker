@@ -13,10 +13,16 @@ def add_ingredient():
     name = request.form['ingredient_name']
     quantity = request.form['quantity']
     unit = request.form['unit']
-    ingredient = Ingredient(name=name, quantity=quantity, unit=unit)
+    threshold = request.form['threshold']
+    ingredient = Ingredient(name=name, quantity=quantity, unit=unit, threshold=threshold)
     db.session.add(ingredient)
     db.session.commit()
     return redirect(url_for('index'))
+
+@app.route('/shopping_list')
+def shopping_list():
+    shopping_list = Ingredient.query.filter(Ingredient.quantity <= Ingredient.threshold).all()
+    return render_template('shopping_list.html', shopping_list=shopping_list)
 
 @app.route('/edit_ingredient/<int:ingredient_id>', methods=['GET', 'POST'])
 def edit_ingredient(ingredient_id):
@@ -25,6 +31,7 @@ def edit_ingredient(ingredient_id):
         ingredient.name = request.form['ingredient_name']
         ingredient.quantity = request.form['quantity']
         ingredient.unit = request.form['unit']
+        ingredient.threshold = request.form['threshold']
         db.session.commit()
         return redirect(url_for('index'))
     return render_template('edit_ingredient.html', ingredient=ingredient)
