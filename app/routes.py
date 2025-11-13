@@ -39,19 +39,23 @@ def dish(dish_id):
 @app.route('/dish/<int:dish_id>/add_ingredient', methods=['POST'])
 def add_ingredient_to_dish(dish_id):
     dish = Dish.query.get_or_404(dish_id)
-    ingredient_id = request.form['ingredient']
-    quantity = request.form['quantity']
-    ingredient = Ingredient.query.get(ingredient_id)
+    ingredient_id = int(request.form['ingredient'])
+    quantity = int(request.form['quantity'])
 
-    # Using the association proxy to add the ingredient with the quantity
-    dish.ingredients.append(ingredient)
-    db.session.commit()
+    # Check if the association already exists
+    association = db.session.query(dish_ingredients).filter_by(dish_id=dish_id, ingredient_id=ingredient_id).first()
 
-    # Now, let's update the quantity in the association table
-    stmt = db.update(dish_ingredients).where(
-        db.and_(dish_ingredients.c.dish_id == dish_id, dish_ingredients.c.ingredient_id == ingredient_id)
-    ).values(quantity=quantity)
-    db.session.execute(stmt)
+    if association:
+        # Update the quantity if the association exists
+        stmt = db.update(dish_ingredients).where(
+            db.and_(dish_ingredients.c.dish_id == dish_id, dish_ingredients.c.ingredient_id == ingredient_id)
+        ).values(quantity=quantity)
+        db.session.execute(stmt)
+    else:
+        # Create a new association if it does not exist
+        stmt = db.insert(dish_ingredients).values(dish_id=dish_id, ingredient_id=ingredient_id, quantity=quantity)
+        db.session.execute(stmt)
+
     db.session.commit()
 
     return redirect(url_for('dish', dish_id=dish_id))
