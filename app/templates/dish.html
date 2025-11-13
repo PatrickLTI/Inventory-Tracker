@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ dish.name }}</h1>
+
+    <h2>Ingredients</h2>
+    <ul>
+        {% for ingredient in dish.ingredients %}
+            <li>{{ ingredient.ingredient.name }} - {{ ingredient.quantity }}</li>
+        {% endfor %}
+    </ul>
+
+    <form action="{{ url_for('add_ingredient_to_dish', dish_id=dish.id) }}" method="post">
+        <select name="ingredient">
+            {% for ingredient in ingredients %}
+                <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="quantity" placeholder="Quantity">
+        <input type="submit" value="Add Ingredient">
+    </form>
+{% endblock %}

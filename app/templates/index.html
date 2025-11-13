@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Inventory Tracker</h1>
+
+    <h2>Ingredients</h2>
+    <ul>
+        {% for ingredient in ingredients %}
+            <li>{{ ingredient.name }} - {{ ingredient.quantity }} {{ ingredient.unit }}</li>
+        {% endfor %}
+    </ul>
+
+    <form action="{{ url_for('add_ingredient') }}" method="post">
+        <input type="text" name="ingredient_name" placeholder="Ingredient Name">
+        <input type="text" name="quantity" placeholder="Quantity">
+        <input type="text" name="unit" placeholder="Unit">
+        <input type="submit" value="Add Ingredient">
+    </form>
+
+    <h2>Dishes</h2>
+    <ul>
+        {% for dish in dishes %}
+            <li><a href="{{ url_for('dish', dish_id=dish.id) }}">{{ dish.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <form action="{{ url_for('add_dish') }}" method="post">
+        <input type="text" name="dish_name" placeholder="Dish Name">
+        <input type="submit" value="Add Dish">
+    </form>
+
+    <h2>Record Sale</h2>
+    <form action="{{ url_for('record_sale') }}" method="post">
+        <select name="dish">
+            {% for dish in dishes %}
+                <option value="{{ dish.id }}">{{ dish.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="quantity" placeholder="Quantity">
+        <input type="submit" value="Record Sale">
+    </form>
+{% endblock %}
