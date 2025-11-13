@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Inventory Tracker</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %} - Inventory Tracker</title>
 </head>
 <body>
     <div class="container">
