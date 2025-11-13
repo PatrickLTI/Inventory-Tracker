@@ -26,6 +26,15 @@ def run(playwright):
     page.fill("input[name='unit']", "grams")
     page.click("input[value='Add Ingredient']")
 
+    # Update the ingredient quantity directly
+    flour_row = page.locator('tr:has-text("Flour")')
+    flour_row.locator('input[name="new_quantity"]').fill("1500")
+    flour_row.locator('input[type="submit"]').click()
+
+    # Verify that the quantity has been updated on the page
+    ingredients_table_content_after_update = page.inner_text('h2:has-text("Ingredients") + table')
+    assert "1500" in ingredients_table_content_after_update
+
     # Add a dish
     page.fill("input[name='dish_name']", "Bread")
     page.click("input[value='Add Dish']")
@@ -53,7 +62,7 @@ def run(playwright):
     # Get the text content of the ingredients table
     ingredients_table_content = page.inner_text('h2:has-text("Ingredients") + table')
     assert "Flour" in ingredients_table_content
-    assert "600" in ingredients_table_content
+    assert "1100" in ingredients_table_content
     assert "grams" in ingredients_table_content
 
     browser.close()
