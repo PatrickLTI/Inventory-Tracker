@@ -1,0 +1,4 @@
+__pycache__/
+instance/
+flask_output.log
+venv/
