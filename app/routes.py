@@ -18,6 +18,17 @@ def add_ingredient():
     db.session.commit()
     return redirect(url_for('index'))
 
+@app.route('/edit_ingredient/<int:ingredient_id>', methods=['GET', 'POST'])
+def edit_ingredient(ingredient_id):
+    ingredient = Ingredient.query.get_or_404(ingredient_id)
+    if request.method == 'POST':
+        ingredient.name = request.form['ingredient_name']
+        ingredient.quantity = request.form['quantity']
+        ingredient.unit = request.form['unit']
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('edit_ingredient.html', ingredient=ingredient)
+
 @app.route('/add_dish', methods=['POST'])
 def add_dish():
     name = request.form['dish_name']
