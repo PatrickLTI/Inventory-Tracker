@@ -6,8 +6,7 @@ from app.models import Ingredient, Dish, Sale, dish_ingredients
 def index():
     ingredients = Ingredient.query.all()
     dishes = Dish.query.all()
-    sales = Sale.query.all()
-    return render_template('index.html', title='Home', ingredients=ingredients, dishes=dishes, sales=sales)
+    return render_template('index.html', title='Home', ingredients=ingredients, dishes=dishes)
 
 @app.route('/add_ingredient', methods=['POST'])
 def add_ingredient():
