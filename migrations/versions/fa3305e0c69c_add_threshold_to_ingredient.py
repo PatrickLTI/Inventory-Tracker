@@ -1,8 +1,8 @@
-"""Initial migration
+"""Add threshold to Ingredient
 
-Revision ID: 0c7acc8c602e
+Revision ID: fa3305e0c69c
 Revises:
-Create Date: 2025-11-13 05:39:26.050890
+Create Date: 2025-11-14 19:32:32.644581
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0c7acc8c602e'
+revision = 'fa3305e0c69c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -31,11 +31,13 @@ def upgrade():
     sa.Column('name', sa.String(length=64), nullable=True),
     sa.Column('quantity', sa.Integer(), nullable=True),
     sa.Column('unit', sa.String(length=64), nullable=True),
+    sa.Column('threshold', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     with op.batch_alter_table('ingredient', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_ingredient_name'), ['name'], unique=True)
         batch_op.create_index(batch_op.f('ix_ingredient_quantity'), ['quantity'], unique=False)
+        batch_op.create_index(batch_op.f('ix_ingredient_threshold'), ['threshold'], unique=False)
         batch_op.create_index(batch_op.f('ix_ingredient_unit'), ['unit'], unique=False)
 
     op.create_table('dish_ingredients',
@@ -62,6 +64,7 @@ def downgrade():
     op.drop_table('dish_ingredients')
     with op.batch_alter_table('ingredient', schema=None) as batch_op:
         batch_op.drop_index(batch_op.f('ix_ingredient_unit'))
+        batch_op.drop_index(batch_op.f('ix_ingredient_threshold'))
         batch_op.drop_index(batch_op.f('ix_ingredient_quantity'))
         batch_op.drop_index(batch_op.f('ix_ingredient_name'))
 
