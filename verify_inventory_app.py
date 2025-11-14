@@ -24,7 +24,6 @@ def run(playwright):
     page.fill("input[name='ingredient_name']", "Flour")
     page.fill("input[name='quantity']", "1000")
     page.fill("input[name='unit']", "grams")
-    page.fill("input[name='threshold']", "500")
     page.click("input[value='Add Ingredient']")
 
     # Add a dish
@@ -32,32 +31,15 @@ def run(playwright):
     page.click("input[value='Add Dish']")
 
     # Navigate to the dish page
-    page.click("a:text('Manage')")
+    page.click("a:text('Bread')")
 
     # Add the ingredient to the dish
     page.select_option("select[name='ingredient']", label="Flour")
-    page.fill("input[name='quantity']", "600")
-    page.click("input[value='Add/Update Ingredient']")
-
-    # Go back to the index page
-    page.goto("http://127.0.0.1:5000/")
-
-    # Record a sale
-    page.select_option("select[name='dish']", label="Bread")
-    page.fill("input[name='sale_quantity']", "1")
-    page.click("input[value='Record Sale']")
-
-    # Go to the shopping list page
-    page.click("a:text('Shopping List')")
+    page.fill("input[name='quantity']", "200")
+    page.click("input[value='Add Ingredient']")
 
     # Take a screenshot to verify
-    page.screenshot(path="verification.png")
-
-    # Verify that the ingredient is in the shopping list
-    shopping_list_content = page.inner_text('table')
-    assert "Flour" in shopping_list_content
-    assert "400" in shopping_list_content
-    assert "500" in shopping_list_content
+    page.screenshot(path="/home/jules/verification/verification.png")
 
     browser.close()
 

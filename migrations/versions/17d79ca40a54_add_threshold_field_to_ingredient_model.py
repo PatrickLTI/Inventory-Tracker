@@ -1,8 +1,8 @@
-"""Initial migration with threshold
+"""Add threshold field to Ingredient model
 
-Revision ID: b48b2efb69bb
+Revision ID: 17d79ca40a54
 Revises:
-Create Date: 2025-11-14 01:41:35.655864
+Create Date: 2025-11-14 06:34:43.838703
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b48b2efb69bb'
+revision = '17d79ca40a54'
 down_revision = None
 branch_labels = None
 depends_on = None
