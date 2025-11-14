@@ -11,9 +11,10 @@ def index():
 @app.route('/add_ingredient', methods=['POST'])
 def add_ingredient():
     name = request.form['ingredient_name']
-    quantity = request.form['quantity']
+    quantity = int(request.form['quantity'])
     unit = request.form['unit']
-    ingredient = Ingredient(name=name, quantity=quantity, unit=unit)
+    threshold = int(request.form['threshold'])
+    ingredient = Ingredient(name=name, quantity=quantity, unit=unit, threshold=threshold)
     db.session.add(ingredient)
     db.session.commit()
     return redirect(url_for('index'))
@@ -23,8 +24,9 @@ def edit_ingredient(ingredient_id):
     ingredient = Ingredient.query.get_or_404(ingredient_id)
     if request.method == 'POST':
         ingredient.name = request.form['ingredient_name']
-        ingredient.quantity = request.form['quantity']
+        ingredient.quantity = int(request.form['quantity'])
         ingredient.unit = request.form['unit']
+        ingredient.threshold = int(request.form['threshold'])
         db.session.commit()
         return redirect(url_for('index'))
     return render_template('edit_ingredient.html', ingredient=ingredient)
