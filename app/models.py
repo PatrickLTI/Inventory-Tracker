@@ -11,7 +11,7 @@ class Ingredient(db.Model):
     name = db.Column(db.String(64), index=True, unique=True)
     quantity = db.Column(db.Integer, index=True)
     unit = db.Column(db.String(64), index=True)
-
+    threshold = db.Column(db.Integer, default=0, index=True)
     def __repr__(self):
         return f'<Ingredient {self.name}>'
 
